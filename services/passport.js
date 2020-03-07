@@ -5,11 +5,13 @@ import LocalStrategy from 'passport-local';
 import User from '../models/user.js';
 import SECRET_KEY from '../config.js';
 
+
+
 const JwtStrategy = passportJwt.Strategy;
 const ExtractJWT = passportJwt.ExtractJwt;
 
-const LocalOptions = { usernameField: 'email' };
-const localLogin = new LocalStrategy(LocalOptions, (email, password, done) => {
+const localOptions = { usernameField: 'email' };
+const localLogin = new LocalStrategy(localOptions, (email, password, done) => {
   User.findOne({email}, (err, user) => {
     if(err) 
       return done(err);
@@ -17,7 +19,7 @@ const localLogin = new LocalStrategy(LocalOptions, (email, password, done) => {
     if(!user) 
       return done(null, false);
 
-    user.comparePasswords(password, function(err, isMatch) {
+    user.comparePassword(password, function(err, isMatch) {
       if(err) return done(err);
 
       if(!isMatch) return done(null, false);
@@ -56,3 +58,5 @@ const jwtLogin = new JwtStrategy(jwtOptions, (payload, done) => {
 // Tell passport to use this strategy.
 passport.use(jwtLogin);
 passport.use(localLogin);
+
+export default passport;

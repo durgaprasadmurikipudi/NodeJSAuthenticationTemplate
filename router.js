@@ -1,9 +1,10 @@
 import passport from 'passport';
+import passportService from './services/passport.js';
 
 import { signUp, signIn } from './controllers/Authentication.js';
 
 const requireAuth = passport.authenticate('jwt', { session: false });
-const requireSignin = passport.authenticate('local', { session: false});
+const requireSignIn = passport.authenticate('local', { session: false});
 
 const route = app => {
   app.get('/', requireAuth, (req, res) => {
@@ -11,7 +12,7 @@ const route = app => {
   });
 
   app.post('/signIn', requireSignIn, signIn);
-  app.post('/signup', signUp);
+  app.post('/signUp', signUp);
 };
 
 export default route;

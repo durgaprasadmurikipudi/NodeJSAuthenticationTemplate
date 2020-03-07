@@ -39,5 +39,5 @@ export const signUp = (req, res, next) => {
 };
 
 export const signIn = (req, res, next) => {
-
+  res.send({ token: tokenForUser(req.user)});
 }
